@@ -51,6 +51,8 @@ jobs:
 
       - name: Check out code into the Go module directory
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - run: echo "VERSION=`echo $(git describe --tags)`" >> $GITHUB_ENV
 
@@ -87,5 +89,6 @@ jobs:
         uses: docker://softprops/action-gh-release
         with:
           files: "*/rmapi-*"
+          prerelease: ${{ contains(github.ref_name, '-') }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
